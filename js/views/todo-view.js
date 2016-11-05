@@ -18,9 +18,14 @@ var app = app || {};
 		// The DOM events specific to an item.
 		events: {
 			'click .toggle': 'toggleCompleted',
-			//add a event name for click of the edti button
-			'click .edit-btn' : 'edit',
+			//add a event name for click of the edit button
+			//that was enought to make edit button working due to
+			// backbonejs features described in View -Extend
+			//http://backbonejs.org/#View-extend
+			'click .edit-btn': 'edit',
 			'dblclick label': 'edit',
+			//connect priority button
+			'click .priority-btn': 'togglePriority',
 			'click .destroy': 'clear',
 			'keypress .edit': 'updateOnEnter',
 			'keydown .edit': 'revertOnEscape',
@@ -52,6 +57,7 @@ var app = app || {};
 
 			this.$el.html(this.template(this.model.toJSON()));
 			this.$el.toggleClass('completed', this.model.get('completed'));
+			this.$el.toggleClass('priority', this.model.get('priority'));
 			this.toggleVisible();
 			this.$input = this.$('.edit');
 			return this;
@@ -65,6 +71,10 @@ var app = app || {};
 			return this.model.get('completed') ?
 				app.TodoFilter === 'active' :
 				app.TodoFilter === 'completed';
+		},
+		// Toggle the `"priority"` state of the model.
+		togglePriority: function () {
+			this.model.togglePriority();
 		},
 
 		// Toggle the `"completed"` state of the model.
